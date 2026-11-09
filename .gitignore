@@ -1,0 +1,5 @@
+inbox/*
+!inbox/.gitkeep
+scan-seen.jsonl
+.scan-tmp/
+.DS_Store
