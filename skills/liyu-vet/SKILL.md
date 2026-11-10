@@ -27,7 +27,7 @@ argument-hint: "[--help]"
 ```
 
 ## 開始
-1. `scan-criteria.md` 或 `criteria/` 有沒 commit 的改動（上次中途停下），先 commit。
+1. `scan-criteria.md` 或 `criteria/` 有沒 commit 的改動（上次中途停下），先 commit。git 一律用 `git -C ~/talenttb/rubric`，不管目前在哪個專案。
 2. 讀 `scan-criteria.md` 和 `criteria/INDEX.md`。
 3. 告訴使用者有幾封，從最舊的開始。
 
@@ -48,7 +48,7 @@ argument-hint: "[--help]"
    使用者可以先討論，討論完再選。
 4. 當場操作類問題（例如動憑證、印出機密）不算審核規則，不要提議 r。
 5. 選 r：把相關的既有規則都列出來，和使用者一起討論要新增、修改或刪除哪幾條；一封信可以改好幾條。不要自己判定哪條不適用。
-6. 選 r 或 s：先給使用者看改動全文，一起調整，同意才寫；寫完 commit（只 commit `scan-criteria.md`、`criteria/`），再刪信。
+6. 選 r 或 s：先給使用者看改動全文，一起調整，同意才寫；寫完用 `git -C ~/talenttb/rubric` commit（只 commit `scan-criteria.md`、`criteria/`），再刪信。
 7. 使用者說 scan 漏抓了某類對話：用 s 在 `scan-criteria.md` 加「這類要拉」。
 8. 使用者想自己加一條規則（不是從信來的）：照 r 的方式討論、寫入。使用者也可以直接改 `criteria/` 的檔。
 
