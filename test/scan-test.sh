@@ -88,4 +88,35 @@ scan >/dev/null; judge; write
 N="$(grep -l 'n1' "$RUBRIC_HOME"/inbox/*.md | head -1)"
 chk "系統通知不當成使用者原文" "$(grep -c '^U: <task-notification' "$N")" 0
 chk "通知所在回合的使用者原文還在" "$(grep -c '^U: 不對，通知' "$N")" 1
+sec(){ awk -v h="$2" 'index($0,"## ")==1{p=($0==h)} p' "$1"; }
+PRE='## 前文（只當背景）'; POST='## 後文（只當背景）'; IN="$RUBRIC_HOME/inbox"
+chk "前文貼前一回合" "$(sec "$L" "$PRE" | grep -c '^U: 新需求')" 1
+chk "後一回合還在進行：不貼" "$(sec "$L" "$POST" | grep -c '^還在進行')" 1
+chk "信在 session 開頭：前文寫無" "$(sec "$(grep -l '^turns: \[c1\]' "$IN"/*.md | head -1)" "$PRE" | grep -c '^無，session 開頭')" 1
+G="$RUBRIC_PROJECTS/p/s10.jsonl"
+{ u g1 s10 2026-10-28T00:00:00.000Z 新需求甲
+  printf '{"type":"assistant","uuid":"gt","sessionId":"s10","timestamp":"2026-10-28T00:00:30.000Z","message":{"content":[{"type":"tool_use","name":"Bash","input":{"command":"ls"}}]}}\n'
+  a ga1 s10 2026-10-28T00:01:00.000Z ok; u g2 s10 2026-10-28T00:02:00.000Z 不對，一; a ga2 s10 2026-10-28T00:03:00.000Z 好
+  u g3 s10 2026-10-28T00:04:00.000Z 中間確認; a ga3 s10 2026-10-28T00:05:00.000Z ok; u g4 s10 2026-10-28T00:06:00.000Z 不對，二; a ga4 s10 2026-10-28T00:07:00.000Z 好
+  u g5 s10 2026-10-28T00:08:00.000Z 收尾; a ga5 s10 2026-10-28T00:09:00.000Z 完成; u g6 s10 2026-10-28T00:10:00.000Z 不對，進行中; } > "$G"
+scan >/dev/null
+jq '{turns:[.[]|{uuid,outcome:(if (.u|test("不對|收尾")) then "inbox" else "skip" end),reason:""}],letters:[{turns:["g2","g4"],title:"跳號信",stage:"",background:"",background_missing:"",result:"",why:""},{turns:["g5"],title:"收尾信",stage:"",background:"",background_missing:"",result:"",why:""}]}' "$RUBRIC_HOME/.scan-tmp/new.json" > "$RUBRIC_HOME/.scan-tmp/result-0.json"; write
+GA="$(grep -l '^# 跳號信' "$IN"/*.md | head -1)"; GB="$(grep -l '^# 收尾信' "$IN"/*.md | head -1)"
+chk "前文：被 skip 的前一回合也貼" "$(sec "$GA" "$PRE" | grep -c '^U: 新需求甲')" 1
+chk "前文不貼工具呼叫" "$(sec "$GA" "$PRE" | grep -c '^T: ')" 0
+chk "略過標記" "$(grep -c '^\[略過 1 回合：g3\]$' "$GA")" 1
+chk "略過的回合不貼原文" "$(grep -c '中間確認' "$GA")" 0
+chk "後文貼後一回合" "$(sec "$GA" "$POST" | grep -c '^U: 收尾')" 1
+chk "next 指向這次寫的下一封" "$(grep -c "^next: $(basename "$GB" .md)$" "$GA")" 1
+chk "prev 指向這次寫的上一封" "$(grep -c "^prev: $(basename "$GA" .md)$" "$GB")" 1
+chk "還在進行的後一回合內容不進信" "$(grep -c '不對，進行中' "$GB")" 0
+u g7 s10 2026-10-28T00:11:00.000Z 下一則 >> "$G"
+scan >/dev/null; judge; write
+chk "prev 指向 inbox 已有的信" "$(grep -c "^prev: $(basename "$GB" .md)$" "$(grep -l '^turns: \[g6\]' "$IN"/*.md | head -1)")" 1
+chk "舊信不改" "$(grep -c '^next: $' "$GB")" 1
+{ u h1 s11 2026-10-29T00:00:00.000Z 不對，唯一; a h2 s11 2026-10-29T00:01:00.000Z 好; } > "$RUBRIC_PROJECTS/p/s11.jsonl"
+idle 0; scan >/dev/null; judge; write; idle 99999
+H="$(grep -l '^turns: \[h1\]' "$IN"/*.md | head -1)"
+chk "單回合 session：前文寫無" "$(sec "$H" "$PRE" | grep -c '^無，session 開頭')" 1
+chk "信在 session 結尾：後文寫無" "$(sec "$H" "$POST" | grep -c '^無，session 結尾')" 1
 echo "== $pass passed, $fail failed"; [ "$fail" -eq 0 ]
