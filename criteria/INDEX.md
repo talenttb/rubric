@@ -1,2 +1,3 @@
 - [使用者的話和依據的資料沒互相對過](73097d5f.md) `handoff` `scope` `expectation-gap`：agent 依據交接單、計畫檔、筆記、摘要、規格、ledger 或程式碼行為來提案、實作，或回答使用者對功能的疑問時
 - [說法沒查證就拿來用](b8f01951.md) `verification` `plan-claim` `rationale`：提案、計畫或提問裡把某個說法當事實用時，不管說法出自資料還是 agent 自己
+- [新增檔案沒交代既有的為什麼放不下](ae705b27.md) `new-file` `structure`：計畫或 diff 新增檔案、模組或 namespace 時
