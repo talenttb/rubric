@@ -30,8 +30,10 @@ scan 只把討論拉出來：不分類成規則、不判斷能否通用、不讀
 
 每個 `$RUBRIC/.scan-tmp/batch-N.json` 派一個 general-purpose subagent，同時最多 5 個，prompt 用下面的模板，代入 N 和 focus。派完等全部結束。
 
+subagent 回報有 inbox 回合沒讀原文時，用 SendMessage 叫同一個 subagent 把沒讀的補讀完，照原文更新 result-N.json，再回報一次。每一批都回報 0 個沒讀，才進第 3 步。
+
 ```
-判斷一批對話，寫結果到 ~/talenttb/rubric/.scan-tmp/result-N.json。回傳只要回合數與信數，不要貼對話原文。
+判斷一批對話，寫結果到 ~/talenttb/rubric/.scan-tmp/result-N.json。回傳只要回合數、信數、第二階段沒讀原文的 inbox 回合數，不要貼對話原文。
 
 讀 ~/talenttb/rubric/scan-criteria.md，照它判。這次多看：<focus，沒有就寫「無」>。
 
