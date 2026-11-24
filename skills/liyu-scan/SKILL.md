@@ -6,7 +6,7 @@ argument-hint: "[--focus \"重點\"] [--since 60d] [--dry-run] [--help]"
 
 參數：$ARGUMENTS
 
-scan 只把討論拉出來：不分類成規則、不判斷能否通用、不讀 `decisions.jsonl` 或標準。不問使用者問題。`~/.claude/projects` 只讀。
+scan 只把討論拉出來：不分類成規則、不判斷能否通用、不讀 `criteria/`。不問使用者問題。`~/.claude/projects` 只讀。
 
 路徑：`RUBRIC=~/talenttb/rubric`，腳本在 `$RUBRIC/skills/liyu-scan/scan/`，用 `/bin/bash` 執行。
 
@@ -33,7 +33,7 @@ scan 只把討論拉出來：不分類成規則、不判斷能否通用、不讀
 ```
 判斷一批對話，寫結果到 ~/talenttb/rubric/.scan-tmp/result-N.json。回傳只要回合數與信數，不要貼對話原文。
 
-讀 ~/talenttb/rubric/scan-criteria.md，照它判；原則是盡量拉，拿不定一律拉。這次多看：<focus，沒有就寫「無」>。
+讀 ~/talenttb/rubric/scan-criteria.md，照它判。這次多看：<focus，沒有就寫「無」>。
 
 ~/talenttb/rubric/.scan-tmp/batch-N.json 的 sessions[] 有 sid、file、first、context、new。回合欄位：uuid、last、ts、u（使用者文字）、suggest（接受系統建議）、a（agent 最後文字的頭尾）、marks（REJECT、INT、RETRY）、fails、edits、tools、prior。context、first 只當背景，不判。
 
