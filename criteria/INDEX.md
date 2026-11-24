@@ -2,3 +2,4 @@
 - [說法沒查證就拿來用](b8f01951.md) `verification` `plan-claim` `rationale`：提案、計畫或提問裡把某個說法當事實用時，不管說法出自資料還是 agent 自己
 - [新增的東西沒交代既有的為什麼不能用](ae705b27.md) `new-file` `new-function` `ui` `structure`：計畫或 diff 新增檔案、模組、namespace、函數或畫面區塊時
 - [名稱沒說出實際做的事](d643ec99.md) `naming`：計畫或 diff 新增或改名函數、資料屬性時
+- [新增的欄位或分支沒交代誰用、何時會走到](f81d764a.md) `derived-data` `defensive-code` `workaround`：計畫或 diff 在資料上新增欄位、包一層，或新增處理特殊情況的分支時
